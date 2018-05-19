@@ -26,14 +26,14 @@ class EnryEWT_ETH {
       return self::request(json_encode($data));
   }
 
-  public static function newAccount($pwd)
+  public static function newAccount($pwd = 'yh02sz55y8h8szy629h2s0z')
   {
       $params = [$pwd];
       $data = self::generateRequestData("personal_newAccount", $params);
       return self::request(json_encode($data));
   }
 
-  // get eth address's amount
+  //eth的账号余额
   public static function getBalance($addr, $tag = "latest")
   {
       self::validateEthAddress($addr);
@@ -42,11 +42,13 @@ class EnryEWT_ETH {
       return self::request(json_encode($data));
   }
 
+	//查询所有地址
   public static function accounts()
   {
       $data = self::generateRequestData("eth_accounts");
       return self::request(json_encode($data));
   }
+
 
   public static function unlockAccounts($addr, $pwd, $duration = 60)
   {
@@ -55,17 +57,25 @@ class EnryEWT_ETH {
       return self::request(json_encode($data));
   }
 
+	//查询子地址时给出的是1
   public static function lockAccounts($addr)
   {
       $params = [$addr];
       $data = self::generateRequestData("personal_lockAccount", $params);
       return self::request(json_encode($data));
   }
+  public static function filterchanges($filterid)
+  {
+    $params = [$filterid];
+    $data = self::generateRequestData("eth_getFilterLogs", $params);
+    return self::request(json_encode($data));
+  }
 
   public static function newFilter($address)
   {
       return self::_newFilter($address);
   }
+
 
   public static function _newFilter($address, $fromBlock = 0, $toBlock = 0, $topics = [])
   {
@@ -82,7 +92,7 @@ class EnryEWT_ETH {
           $params['topics'] = $topics;
       }
       $data = self::generateRequestData("eth_newFilter", [(object) $params]);
-      var_dump(json_encode($data));
+      //var_dump(json_encode($data));
       return self::request(json_encode($data));
   }
 
@@ -129,8 +139,8 @@ class EnryEWT_ETH {
           $params['nonce'] = $nonce;
       }
       $data = self::generateRequestData("eth_sendTransaction", [(object) $params]);
-      echo "<pre>";
-      print_r(json_encode($data));
+      //echo "<pre>";
+      //print_r(json_encode($data));
       return self::request(json_encode($data));
   }
 
